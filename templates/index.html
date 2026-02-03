@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PneumoScan AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+    <h2>🫁 PneumoScan AI</h2>
+
+</nav>
+
+<section class="hero">
+    <div class="text">
+        <h1>The Future of <span>Chest Imaging</span></h1>
+        <p>AI-powered pneumonia detection using deep learning on X-ray scans.</p>
+
+        <div class="stats">
+            <div><b>95%</b><br>Accuracy</div>
+            <div><b>Instant</b><br>Results</div>
+        </div>
+    </div>
+
+    <div class="image">
+        <img src="{{ url_for('static', filename='image copy 2.png') }}">
+    </div>
+</section>
+
+<section class="upload-card">
+    <form method="POST" enctype="multipart/form-data">
+        <label class="upload-box">
+            <input type="file" name="image" id="imageInput" required hidden>
+            <span>📤 Select Chest X-ray</span>
+            <p>Click to browse or drag & drop</p>
+        </label>
+
+        <button type="submit">Initiate AI Analysis →</button>
+    </form>
+
+
+    <div id="uploadStatus" class="upload-status"></div>
+
+    {% if prediction %}
+    <div class="result {{ 'normal' if prediction == 'NORMAL' else 'pneumonia' }}">
+        <h3>{{ prediction }}</h3>
+        <p>Confidence: {{ confidence }}%</p>
+    </div>
+    {% endif %}
+    <!-- <button type="button" onclick="resetForm()" class="refresh-btn">🔄 Clear</button> -->
+</section>
+
+
+<script>
+    const imageInput = document.getElementById("imageInput");
+    const uploadStatus = document.getElementById("uploadStatus");
+
+    imageInput.addEventListener("change", function () {
+        if (this.files && this.files.length > 0) {
+            uploadStatus.innerHTML = "✅ File selected successfully!";
+            uploadStatus.classList.add("success");
+        }
+    });
+
+    function resetForm() {
+    document.querySelector("form").reset();
+    document.getElementById("uploadStatus").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
